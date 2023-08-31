@@ -3,7 +3,7 @@
     1. Buat function untuk update data user yang ada di database;
     2. buat function untuk delete data user yang ada di database;
 */
-import * as UserRepo from './repository.js';
+import * as UserRepo from './repositories/user.js';
 
 const createUser = async (name, email, password) => {
     const [result] = await UserRepo.createData(name, email, password);

@@ -1,4 +1,4 @@
-import dbPool from "./db.js";
+import dbPool from "../utils/db.js";
 
 export const getData = (limit) => {
     const sql = "SELECT user_id, name, email, password, created_at FROM users LIMIT ?";
