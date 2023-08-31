@@ -16,6 +16,13 @@ export const createData = (name, email, password) => {
     return result;
 }
 
+export const getDataById = (id) => {
+    const sql = "SELECT user_id, name, email, password, created_at FROM users WHERE user_id = ?";
+    const values = [id];
+
+    return dbPool.query(sql, values)
+}
+
 export const updateData = () => {
 
 }
