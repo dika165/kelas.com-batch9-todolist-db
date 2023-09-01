@@ -1,31 +1,35 @@
 /*
-    Tugas Praktek : 
-    1. Buat function untuk update data user yang ada di database;
-    2. buat function untuk delete data user yang ada di database;
+    1. buat endpoint untuk update dan delete user <= tugas sesi 4
+    2. Buat table dengan nama tasks dan buat field / column sebagai berikut: 
+        - task_id
+        - user_id
+        - title
+        - is_done
+        - created_at
+        - updated_at
+    3. Buat endpoint untuk CRUD table tasks di atas. (field user_id diambil dari claims / payload tokennya)
+    4. Di masing-masing endpoint CRUD tasks dilakukan otorisasi
 */
-import * as UserRepo from './repositories/user.js';
 
-const createUser = async (name, email, password) => {
-    const [result] = await UserRepo.createData(name, email, password);
+import express from 'express';
+import userRouter from './routes/userRoute.js';
+import authRouter from './routes/authRoute.js';
+import { errorResp } from './utils/response.js';
 
-    console.log(`Data berhasil dibuat dengan id : ${result.insertId}`);
-}
+const app = express();
+const port = 8080;
+const host = "localhost";
 
-const getUser = async (limit) => {
-    const [result] = await UserRepo.getData(limit);
+app.use(express.json());
+app.use("/users",userRouter);
+app.use("/auth", authRouter);
 
-    console.log(result);
-}
+app.use((error, request, response, next) => {
+    const message = "internal server error";
+    console.log(error.message);
+    errorResp(response, message, 500)
+});
 
-await createUser("zafif", "zafif@gmail.com", "pass1234");
-await createUser("farhan", "farhan@gmail.com", "pass1234")
-
-console.log("data yang ada di database: ");
-
-getUser(100);
-
-// updateUser()
-// getUser()
-
-// deleteUser()
-// getUser()
+app.listen(port, host, ()=> {
+    console.log(`Server berjalan di http://${host}:${port}`)
+})
